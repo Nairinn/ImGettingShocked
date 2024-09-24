@@ -3,7 +3,6 @@ import glob
 import time
 import board
 import busio
-import adafruit_max30102
 
 os.system('modprobe w1-gpio')
 os.system('modprobe w1-therm')
