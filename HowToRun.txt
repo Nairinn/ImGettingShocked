@@ -1,0 +1,46 @@
+### Step-by-Step Instructions for Setting Up Flask and Sensors on Raspberry Pi
+
+1. **Update Your Raspberry Pi:**
+   Open the terminal and run the following commands to update your package list and upgrade installed packages:
+   ```bash
+   sudo apt update
+   sudo apt upgrade
+   ```
+
+2. **Install Required Libraries:**
+   Install the necessary libraries for Flask and the sensors:
+   ```bash
+   sudo apt install python3-pip
+   pip3 install Flask adafruit-circuitpython-max30102 adafruit-circuitpython-ds18x20 adafruit-circuitpython-busio
+   ```
+
+3. **Set Up One-Wire Temperature Sensor:**
+   Enable the One-Wire interface:
+   ```bash
+   sudo raspi-config
+   ```
+   Navigate to **Interfacing Options > 1-Wire > Enable**.
+
+4. **Create Your Project Directory:**
+   Create a directory for your project and navigate into it:
+   ```bash
+   mkdir ~/sensor_project
+   cd ~/sensor_project
+   ```
+
+5. **Run Your Flask App:**
+   In the terminal, run your Flask application:
+   ```bash
+   python3 app.py
+   ```
+   Your app will now be running, and you can access it via `http://<your-raspberry-pi-ip>:5000/sensor-data`.
+
+6. **Test Your Setup:**
+   Open a web browser or use `curl` to check if your Flask app is returning sensor data:
+   ```bash
+   curl http://<your-raspberry-pi-ip>:5000/sensor-data
+   ```
+
+7. **Access the Data in Frontend:**
+   Now that your backend is running, you can create a React frontend that makes HTTP GET requests to the `/sensor-data` endpoint to display the sensor readings.
+
