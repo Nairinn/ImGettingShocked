@@ -1,15 +1,15 @@
 import os
 import glob
 import time
+from flask import Flask, jsonify
 import board
 import busio
 import adafruit_max30102
-import adafruit_ds18x20
-import adafruit_onewire.bus
+
+app = Flask(__name__)
 
 os.system('modprobe w1-gpio')
 os.system('modprobe w1-therm')
-
 base_dir = '/sys/bus/w1/devices/'
 device_folder = glob.glob(base_dir + '28*')[0]
 device_file = device_folder + '/w1_slave'
@@ -31,15 +31,16 @@ def read_temp():
 i2c = busio.I2C(board.SCL, board.SDA)
 max30102_sensor = adafruit_max30102.MAX30102(i2c)
 
-def read_sensor_data():
-    while True:
-        temp = read_temp()
-        print("Temperature: {:.2f} C".format(temp))
-        
-        red, ir = max30102_sensor.read()
-        print("Red LED: {}, IR LED: {}".format(red, ir))
-        
-        time.sleep(1)
+@app.route('/sensor-data', methods=['GET'])
+def get_sensor_data():
+    temp = read_temp()
+    red, ir = max30102_sensor.read()
+    
+    return jsonify({
+        'temperature': temp,
+        'red_led': red,
+        'ir_led': ir
+    })
 
-if __name__ == "__main__":
-    read_sensor_data()
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)
