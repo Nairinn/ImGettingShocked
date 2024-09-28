@@ -1,0 +1,45 @@
+
+Connecting Sensors to Raspberry Pi So I don't forget lol 
+
+1. Wiring the Sensors
+
+   HiLetgo MAX30102 (Heart Rate Sensor):
+   - GND (Ground) -> Connect to any ground pin on the Raspberry Pi.
+   - VCC (Power) -> Connect to the 3.3V or 5V pin (depending on the sensor's operating voltage).
+   - SCL (Clock Line) -> Connect to GPIO3 (Pin 5) on the Raspberry Pi.
+   - SDA (Data Line) -> Connect to GPIO2 (Pin 3) on the Raspberry Pi.
+
+   BOJACK DS18B20 (Temperature Sensor):
+   - GND (Ground) -> Connect to any ground pin on the Raspberry Pi.
+   - VCC (Power) -> Connect to the 3.3V pin.
+   - DQ (Data) -> Connect to GPIO4 (Pin 7) on the Raspberry Pi.
+   - Resistor -> Place a 4.7kΩ resistor between the VCC and DQ (data) line.
+
+2. Enabling I2C for the MAX30102:
+   To use the MAX30102 heart rate sensor, enable I2C communication on the Raspberry Pi:
+   - Open the terminal and run:
+     sudo raspi-config
+   - Go to Interfacing Options, then select I2C, and enable it.
+   - Install I2C tools:
+     sudo apt-get install i2c-tools
+     sudo i2cdetect -y 1
+
+3. Enable 1-Wire Interface for DS18B20:
+   - Open the terminal and run:
+     sudo raspi-config
+   - Select Interfacing Options and enable 1-Wire.
+   - Verify DS18B20 sensor is detected:
+     ls /sys/bus/w1/devices/
+     You should see a folder that starts with 28-, which indicates your sensor is connected.
+
+4. Reading Data in Python:
+   For MAX30102:
+   - Install the required library:
+     pip install max30102
+   - Use Python to read sensor data.
+
+   For DS18B20:
+   - Use the w1thermsensor library:
+     pip install w1thermsensor
+   - Access the temperature sensor data in Python.
+
